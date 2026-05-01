@@ -10,9 +10,10 @@ interface PreferenceFormProps {
   onLoading: (loading: boolean) => void;
   onError: (error: string) => void;
   isLoading: boolean;
+  onLocationChange?: (location: string) => void;
 }
 
-export function PreferenceForm({ onRecommendations, onLoading, onError, isLoading }: PreferenceFormProps) {
+export function PreferenceForm({ onRecommendations, onLoading, onError, isLoading, onLocationChange }: PreferenceFormProps) {
   const [formData, setFormData] = useState<RecommendationRequest>({
     location: "",
     budget_band: "medium",
@@ -122,6 +123,9 @@ export function PreferenceForm({ onRecommendations, onLoading, onError, isLoadin
             setFormData({ ...formData, location: e.target.value });
             if (errors.location) {
               setErrors({ ...errors, location: "" });
+            }
+            if (onLocationChange) {
+              onLocationChange(e.target.value);
             }
           }}
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 ${

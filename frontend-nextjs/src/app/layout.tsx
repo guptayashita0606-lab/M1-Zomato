@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export const metadata: Metadata = {
-  title: "Restaurant Recommendations - Milestone 1",
-  description: "AI-powered restaurant recommendation system",
+  title: "Zomato AI - Restaurant Recommendations",
+  description: "AI-powered restaurant recommendation system with culinary joy",
 };
 
 export default function RootLayout({
@@ -15,11 +12,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <div className="min-h-screen bg-gray-50">
-          {children}
-        </div>
+    <html lang="en" className="light">
+      <body className="bg-background text-on-background font-body-md min-h-screen flex">
+        {children}
       </body>
     </html>
   );

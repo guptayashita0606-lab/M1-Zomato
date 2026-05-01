@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700;800;900&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;family=Be+Vietnam+Pro:wght@600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#696363",
+                        "on-primary-container": "#fffbff",
+                        "on-tertiary-fixed": "#1b1c15",
+                        "on-tertiary-fixed-variant": "#47473e",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#eae0e0",
+                        "surface-container-high": "#eae7e7",
+                        "secondary": "#635d5d",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#e4bebc",
+                        "on-surface": "#1b1c1c",
+                        "on-secondary-fixed": "#1f1b1b",
+                        "tertiary": "#5c5c53",
+                        "surface-tint": "#bb162c",
+                        "primary": "#b7122a",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#303030",
+                        "on-surface-variant": "#5b403f",
+                        "tertiary-fixed-dim": "#c8c7bb",
+                        "primary-fixed": "#ffdad8",
+                        "tertiary-fixed": "#e4e3d6",
+                        "surface-container-highest": "#e4e2e1",
+                        "inverse-primary": "#ffb3b1",
+                        "surface-bright": "#fcf9f8",
+                        "on-secondary-fixed-variant": "#4b4546",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#db313f",
+                        "surface-variant": "#e4e2e1",
+                        "surface-container-low": "#f6f3f2",
+                        "on-primary-fixed-variant": "#92001c",
+                        "on-tertiary-container": "#fffdf0",
+                        "on-background": "#1b1c1c",
+                        "tertiary-container": "#75756b",
+                        "surface-container": "#f0eded",
+                        "surface": "#fcf9f8",
+                        "background": "#fcf9f8",
+                        "secondary-fixed": "#eae0e0",
+                        "primary-fixed-dim": "#ffb3b1",
+                        "inverse-on-surface": "#f3f0f0",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#410007",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#8f6f6e",
+                        "surface-dim": "#dcd9d9",
+                        "secondary-fixed-dim": "#cdc4c4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "margin": "20px",
+                        "gutter": "12px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Be Vietnam Pro"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "display-xl": ["Epilogue"],
+                        "headline-md": ["Epilogue"],
+                        "headline-lg": ["Epilogue"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["20px", {"lineHeight": "26px", "fontWeight": "600"}],
+                        "headline-lg": ["28px", {"lineHeight": "34px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .warm-shadow {
+            box-shadow: 0 12px 30px rgba(183, 18, 42, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-full flex flex-col p-6 z-40 bg-white dark:bg-stone-900 h-screen w-72 rounded-r-lg border-r border-red-50 dark:border-stone-800 shadow-[10px_0_30px_rgba(226,55,68,0.06)]">
+<div class="mb-xl flex items-center gap-xs">
+<span class="text-xl font-bold text-[#E23744] font-headline-lg">Zomato AI</span>
+</div>
+<div class="flex flex-col gap-sm flex-1">
+<a class="flex items-center gap-3 text-stone-600 dark:text-stone-400 px-6 py-3 rounded-full hover:bg-red-50 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="font-['Epilogue'] font-semibold tracking-tight">Intelligence Hub</span>
+</a>
+<a class="flex items-center gap-3 bg-[#E23744] text-white rounded-full px-6 py-3 shadow-lg shadow-red-200" href="#">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-['Epilogue'] font-semibold tracking-tight">Recommendation Feed</span>
+</a>
+<a class="flex items-center gap-3 text-stone-600 dark:text-stone-400 px-6 py-3 rounded-full hover:bg-red-50 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-['Epilogue'] font-semibold tracking-tight">Chat Assistant</span>
+</a>
+<a class="flex items-center gap-3 text-stone-600 dark:text-stone-400 px-6 py-3 rounded-full hover:bg-red-50 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-['Epilogue'] font-semibold tracking-tight">Recent Insights</span>
+</a>
+</div>
+<div class="mt-auto pt-lg border-t border-red-50">
+<div class="flex items-center gap-md p-2">
+<img alt="User Profile" class="w-10 h-10 rounded-full object-cover" data-alt="A close-up portrait of a friendly professional man in his early 30s with a warm smile, set against a soft-focus minimalist kitchen background. The lighting is bright and high-key, matching a premium white-and-red brand aesthetic. The photography style is modern, crisp, and inviting, symbolizing trust and culinary passion." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArw_6cEdTpgy1YzSFPxFH3XkQBujGRHsVoQzOM0iDSavwhoTIFIEL9qpkGHgA2lHFMP-EFG4cJikAg7NaJl4JgERKT285mZVSEkGk6OJFKjMuwa542dkVGByyXK88hblrQjqHxiCIpRxXfaqgzrkOrNOaKgpPODCX1Jjp7yhjFkRAkc-zyx9eUXYUqL8H6Eo3aKxznkfVkoJLbJPwjAjzpRCaNMXaykZMpIcBMM6W5bOqqnAasE777cHG70KjDY0ecF2gocfVXj3Y"/>
+<div>
+<p class="font-headline-md text-sm">Culinary Joy</p>
+<p class="text-on-secondary-container text-xs">AI Recommendation Engine</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-72 p-xl">
+<!-- Header -->
+<header class="flex justify-between items-center px-6 py-4 w-full sticky top-0 z-50 bg-[#FFF9F5] dark:bg-stone-950 border-b border-red-100/50 shadow-[0_4px_20px_rgba(226,55,68,0.05)] rounded-lg mb-xl">
+<div>
+<h1 class="text-2xl font-black text-[#E23744] tracking-tighter font-display-xl">Curated for You</h1>
+<p class="font-body-md text-on-secondary-container">Human-like intelligence, tailored to your unique palette.</p>
+</div>
+<div class="flex items-center gap-lg">
+<span class="font-['Epilogue'] font-medium text-stone-800">Location: <span class="text-[#E23744]">Manhattan, NY</span></span>
+<button class="material-symbols-outlined text-stone-800 hover:bg-red-50 p-2 rounded-full transition-colors" data-icon="account_circle">account_circle</button>
+</div>
+</header>
+<!-- Main Recommendation Grid -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-lg mb-xl">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden warm-shadow border border-red-50 group">
+<div class="relative aspect-[1.37] overflow-hidden">
+<img alt="Gourmet Dining" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A luxurious spread of gourmet Italian cuisine featuring handmade pasta and artisanal bread, set on a bright white marble table. The scene is bathed in natural morning light, creating a clean, airy, and high-end atmosphere. Soft shadows and a warm color palette of cream and vibrant tomato red dominate the frame, reflecting a celebratory culinary experience." src="https://lh3.googleusercontent.com/aida/ADBb0ui6mP-vEvom21bugCGqoBT4tU8apynR1aUsIe1Rg8ohy5-DrK0EO9OhtShfvR3RlJu_uIbDl55tdIFvyp-5WEYWUuxazOh4wKcTyKzbAGqt-YgiT72NAFr6gr64pDEhpKp_-tgXDQqdGogr1hMxVbOmGPINBIKzpZvLDZdD725mWqQj2ugYCsVS71ilTBjvuHZJ8lO5FaqQOHHXiHPR2VZncGmm9_mKqbBl2G4uQa4XVZp0DtuHStTR6IniFtrgKTgMVxA-4OZFUA"/>
+<div class="absolute top-md right-md bg-primary px-3 py-1 rounded-full shadow-lg">
+<span class="text-white font-label-sm">98% Match</span>
+</div>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-headline-lg text-xl">L'Anima Trattoria</h3>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-yellow-500 text-sm" data-icon="star" data-weight="fill">star</span>
+<span class="font-bold">4.9</span>
+</div>
+</div>
+<p class="text-on-secondary-container font-body-md mb-md">Italian • Fine Dining • 1.2 miles</p>
+<div class="bg-red-50/50 border border-red-100 rounded-lg p-md mb-md">
+<div class="flex items-center gap-xs text-primary mb-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-sm">AI INSIGHT</span>
+</div>
+<p class="text-on-surface-variant text-sm font-body-md">Matches your love for spicy seafood and intimate, candle-lit atmospheres found in your recent history.</p>
+</div>
+<button class="w-full py-md bg-primary text-on-primary font-headline-md rounded-full active:scale-95 duration-200 transition-all hover:shadow-lg">
+                        Reserve a Table
+                    </button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden warm-shadow border border-red-50 group">
+<div class="relative aspect-[1.37] overflow-hidden">
+<img alt="Artisan Sushi" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Exquisitely prepared sushi pieces arranged on a minimalist dark ceramic plate, highlighting vibrant orange salmon and deep red tuna. The background is a clean, bright, high-key Japanese-style kitchen with soft morning sunlight. The visual style is premium and celebratory, focusing on tactile textures and the organic beauty of fresh ingredients in a digital kitchen aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCToWoRjgVI-QJfD0-gLpDlsD5PfUxXxR9RluLw9HN-UdFGNaV0XHKS3N6qNZpXggNl9JZYyq1dri53PhzfHxhrUvWWJsusHCVjdgMUwYgwyK70H6lOXi-vOSkHDCGFaOTYwzhGZvr-Sl4yUmont71cRKyL3nGU6HVN_3wApF7yi63HSMVcOiNbSew31El7WwrvBM121cSdvabVbKMibX9baJVORX_uERgRrN2MCZ3dyqAlsWzSNwPrIhzGY2Q9MOmH5AttaOR9eAE"/>
+<div class="absolute top-md right-md bg-primary px-3 py-1 rounded-full shadow-lg">
+<span class="text-white font-label-sm">96% Match</span>
+</div>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-headline-lg text-xl">Oma-Kase Soul</h3>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-yellow-500 text-sm" data-icon="star" data-weight="fill">star</span>
+<span class="font-bold">4.8</span>
+</div>
+</div>
+<p class="text-on-secondary-container font-body-md mb-md">Japanese • Omakase • 2.4 miles</p>
+<div class="bg-red-50/50 border border-red-100 rounded-lg p-md mb-md">
+<div class="flex items-center gap-xs text-primary mb-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-sm">AI INSIGHT</span>
+</div>
+<p class="text-on-surface-variant text-sm font-body-md">Refined omakase that perfectly aligns with your preference for "Chef's Specials" and high-grade umami profiles.</p>
+</div>
+<button class="w-full py-md bg-primary text-on-primary font-headline-md rounded-full active:scale-95 duration-200 transition-all hover:shadow-lg">
+                        Reserve a Table
+                    </button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden warm-shadow border border-red-50 group">
+<div class="relative aspect-[1.37] overflow-hidden">
+<img alt="Gourmet Burgers" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A towering, artisanal wagyu beef burger with melting cheese and fresh greens, presented on a rustic yet clean wooden board. The lighting is warm and directional, creating soft ambient shadows on a cream-colored tabletop. The mood is celebratory and indulgent, capturing a high-end comfort food experience within a minimalist, airy digital environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCe5KfmXMuqvcQcK5qqYje5yPU8lLZeV8dR_MpYtKE0hOnqT8ykwJc0mHTQUf5z7YjrYrKWFUiTYFOE5q7-NjzEloOL4qf4ZweGM-oPw__aq62A1qFuVx_-gav9f4uEHFD1pGmqzg9bMEyED5UUGXygNIE9DcX5OpaIsCt8OzdVn1_FaS2jpEmwPUSOmrTPWHHpADqq_IPSE1HJkminU01aCqRbK6pQ_dX1chZFUJKaFST02chXCzb_KHqZpgWH7Syv6ar9em8WeSQ"/>
+<div class="absolute top-md right-md bg-primary px-3 py-1 rounded-full shadow-lg">
+<span class="text-white font-label-sm">94% Match</span>
+</div>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-headline-lg text-xl">The Guild Grill</h3>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-yellow-500 text-sm" data-icon="star" data-weight="fill">star</span>
+<span class="font-bold">4.7</span>
+</div>
+</div>
+<p class="text-on-secondary-container font-body-md mb-md">Modern American • Grill • 0.8 miles</p>
+<div class="bg-red-50/50 border border-red-100 rounded-lg p-md mb-md">
+<div class="flex items-center gap-xs text-primary mb-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-sm">AI INSIGHT</span>
+</div>
+<p class="text-on-surface-variant text-sm font-body-md">Matches your weekend trend of seeking elevated comfort food with sustainable, locally-sourced ingredients.</p>
+</div>
+<button class="w-full py-md bg-primary text-on-primary font-headline-md rounded-full active:scale-95 duration-200 transition-all hover:shadow-lg">
+                        Reserve a Table
+                    </button>
+</div>
+</div>
+</section>
+<!-- Quick Discoveries Section -->
+<section class="mt-xl">
+<div class="flex items-center justify-between mb-lg">
+<h2 class="font-headline-lg text-2xl">Quick Discoveries</h2>
+<div class="flex gap-sm">
+<button class="px-md py-xs rounded-full border border-red-100 bg-white text-primary font-label-sm hover:bg-red-50 transition-colors">Trending Now</button>
+<button class="px-md py-xs rounded-full border border-red-100 bg-white text-on-secondary-container font-label-sm hover:bg-red-50 transition-colors">Hidden Gems</button>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+<!-- Mini Card 1 -->
+<div class="bg-white rounded-lg p-md border border-red-50 flex items-center gap-md warm-shadow hover:scale-[1.02] transition-transform cursor-pointer">
+<img alt="Pizza" class="w-14 h-14 rounded-lg object-cover" data-alt="A close-up shot of a single slice of wood-fired Neapolitan pizza with bubbling mozzarella and fresh basil leaves. The lighting is soft and golden, highlighting the charred texture of the crust. Set against a clean, creamy background, the image evokes a sense of artisanal quality and warm, celebratory culinary joy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADBTFqlhKPapqerHSDNPj-Hyc2O30K8o-q51SJQ2x8HXBibwQBcDUPce4oFgZ7FQq-UUaAzExPfH5I43bv5zzCpJM_tnYXeGdBre6BFMVYCun5DcaaB-3BtUpdqypS6cPx4mwnwJELgOSgelS_qIAqAz5AQCNPonK8H-TRxiYpNBCrsH1VxOqV50ixWdM96eKyOK7nZM-juraDCabyoMZXIBscf7P6rvkH06IC_kMV5-VwwgyqnDA1tUJUHbNK-yYyc0zQ6Zt_c8I"/>
+<div>
+<p class="font-headline-md text-sm truncate">Neapolitan Nook</p>
+<p class="text-primary text-xs font-bold">Trending #1</p>
+</div>
+</div>
+<!-- Mini Card 2 -->
+<div class="bg-white rounded-lg p-md border border-red-50 flex items-center gap-md warm-shadow hover:scale-[1.02] transition-transform cursor-pointer">
+<img alt="Cocktails" class="w-14 h-14 rounded-lg object-cover" data-alt="A sophisticated, crystal-clear cocktail garnished with a fresh orange peel, reflecting light in a minimalist, modern bar setting. The atmosphere is high-key and bright with soft red accents in the glassware. This premium visual celebrates the art of mixology with a clean, airy, and celebratory aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkD68OoCjL7PPTRPKBlyKY5PLm7mb_e62vuG3ksdL1vBVJ6c-8L7Jvf3HeHfQZckMyuo-KgSUdDKPyvVFkzQ5daWyWbcukA3Q9MzSwG0VUGK3XVu9Zjuwg_ym2XypzKy_FP4PjVOTgoxj58MnkS38t_muK86xDin0TnMgcgSfElMWMm_UTnjoT7o4FcsmWTik1c-9nLu7oR1_XgpsaV9HzbJWD0cpecWfZ2nUKI2VVgBrTF-GTvAlvSOu7jkL-GuxMHR5vPubgbnE"/>
+<div>
+<p class="font-headline-md text-sm truncate">The Gin Library</p>
+<p class="text-on-secondary-container text-xs">New Opening</p>
+</div>
+</div>
+<!-- Mini Card 3 -->
+<div class="bg-white rounded-lg p-md border border-red-50 flex items-center gap-md warm-shadow hover:scale-[1.02] transition-transform cursor-pointer">
+<img alt="Pastries" class="w-14 h-14 rounded-lg object-cover" data-alt="A delicate, multi-layered French pastry dusted with powdered sugar, sitting on a fine porcelain plate. The lighting is bright and ethereal, casting soft, warm shadows on a pale pink tablecloth. The mood is celebratory and indulgent, perfectly capturing the premium 'Culinary Joy' brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo7n6pXO5dkR4eU92Y85sww4G6tJwxONL3ZybAnY5fUIqchZX_wCa1egolakbpKosV4YmXTYK0WKZjly6IPt6skWWRSuQeNPm4l1G1yJdtM_HnHTXo1oReqwbPmwDup7fo2usw5vnQhWO3OEJJYoR_ab_HiOI3eNPbMG1VxuLKO5PiNIstKf4QbzYepeN0bUsDaF2I0-AArD3auIcaFAM2ESfLuU43r--oMs89JI4l36dDRTTQsO7HHZkK75rmzdyfxc6eBm7B4jI"/>
+<div>
+<p class="font-headline-md text-sm truncate">Petit Palais</p>
+<p class="text-primary text-xs font-bold">Hidden Gem</p>
+</div>
+</div>
+<!-- Mini Card 4 -->
+<div class="bg-white rounded-lg p-md border border-red-50 flex items-center gap-md warm-shadow hover:scale-[1.02] transition-transform cursor-pointer">
+<img alt="Salad" class="w-14 h-14 rounded-lg object-cover" data-alt="A vibrant, colorful Mediterranean grain bowl with fresh greens, feta, and olives, illuminated by bright natural sunlight. The composition is clean and minimalist, set against a high-key cream background. The image represents health-conscious fine dining with a celebratory, airy, and high-end visual tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtHOJA7bV6EAMUjuO6scswizHfAhs5EXdELM7xQufgXtbrYF9II7xAYQDNc31iSwpRlbwyciXrPT4S_lk2E--X7G2gfiZtpbKSCT7NSUZsGgsKTjJvnZqll8anJt22OMOYqnn2CaWDFuVZ9yYZQrZg904Zld7AZidamtzIOWooqVRyVdgmriXaxs1HBhmoq93atYQXgecuAvN5GmFYqkORLwY4dH3Z1jSTs3K2mV3vOii9qQo69i-UMY4B8A9pBkesEEyQIAdlH_A"/>
+<div>
+<p class="font-headline-md text-sm truncate">Verde Bowls</p>
+<p class="text-on-secondary-container text-xs">Near You</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB for AI Chat -->
+<button class="fixed bottom-lg right-lg w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-transform z-50">
+<span class="material-symbols-outlined text-3xl" data-icon="psychology" data-weight="fill">psychology</span>
+</button>
+</body></html>

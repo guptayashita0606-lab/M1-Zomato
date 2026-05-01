@@ -45,9 +45,13 @@ export function RecommendationResults({ recommendations, isLoading, error }: Rec
         Found {recommendations.length} restaurant{recommendations.length !== 1 ? "s" : ""} for you
       </div>
       
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-lg">
         {recommendations.map((restaurant, index) => (
-          <RestaurantCard key={`${restaurant.name}-${index}`} restaurant={restaurant} />
+          <RestaurantCard 
+            key={`${restaurant.name}-${index}`} 
+            restaurant={restaurant} 
+            matchPercentage={Math.floor(Math.random() * 10) + 90} // Random match between 90-99%
+          />
         ))}
       </div>
     </div>

@@ -1,34 +1,23 @@
 "use client";
 
-import { Utensils } from "lucide-react";
+interface HeaderProps {
+  location?: string;
+}
 
-export function Header() {
+export function Header({ location = "Manhattan, NY" }: HeaderProps) {
   return (
-    <header className="bg-white shadow-sm border-b">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="p-2 bg-primary-100 rounded-lg">
-              <Utensils className="w-6 h-6 text-primary-600" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">Restaurant Recommendations</h1>
-              <p className="text-sm text-gray-600">AI-powered dining suggestions</p>
-            </div>
-          </div>
-          
-          <nav className="hidden md:flex space-x-6">
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
-              Home
-            </a>
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
-              About
-            </a>
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
-              Contact
-            </a>
-          </nav>
-        </div>
+    <header className="flex justify-between items-center px-6 py-4 w-full sticky top-0 z-50 bg-[#FFF9F5] border-b border-red-100/50 shadow-[0_4px_20px_rgba(226,55,68,0.05)] rounded-lg mb-xl">
+      <div>
+        <h1 className="text-2xl font-black text-[#E23744] tracking-tighter font-display-xl">Curated for You</h1>
+        <p className="font-body-md text-on-secondary-container">Human-like intelligence, tailored to your unique palette.</p>
+      </div>
+      <div className="flex items-center gap-lg">
+        <span className="font-headline font-medium text-stone-800">
+          Location: <span className="text-[#E23744]">{location}</span>
+        </span>
+        <button className="material-symbols-outlined text-stone-800 hover:bg-red-50 p-2 rounded-full transition-colors">
+          account_circle
+        </button>
       </div>
     </header>
   );
