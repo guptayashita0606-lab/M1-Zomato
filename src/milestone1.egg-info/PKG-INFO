@@ -1,0 +1,151 @@
+Metadata-Version: 2.4
+Name: milestone1
+Version: 0.1.0
+Summary: AI-powered restaurant recommendation system foundations.
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: python-dotenv>=1.0.1
+Provides-Extra: ingestion
+Requires-Dist: datasets>=2.19.0; extra == "ingestion"
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0.0; extra == "dev"
+
+# Milestone 1 - AI Restaurant Recommendation System
+
+This repository contains a phase-wise implementation of an AI-powered restaurant recommendation system inspired by Zomato.
+
+## Phase 0 Status
+
+Implemented foundations:
+- Project packaging with `src/` layout
+- CLI entrypoint `milestone1`
+- `milestone1 info` command for scope and project metadata
+- `milestone1 doctor` command for environment and file checks
+- Scope and dataset contract docs
+- `.env.example` for secret configuration
+
+## Quick Start
+
+### 1) Create virtual environment and install
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+pip install -e .
+```
+
+### 2) Configure environment
+
+Copy `.env.example` and set values as needed:
+
+```bash
+copy .env.example .env
+```
+
+### 3) Run Phase 0 checks
+
+```bash
+milestone1 info
+milestone1 doctor
+```
+
+## Phase 1 Ingestion
+
+Phase 1 package:
+- `src/milestone1/phase1_ingestion/`
+- Provides `Restaurant`, `iter_restaurants`, `load_restaurants`, normalization, schema assertions, and Hugging Face revision pin.
+
+Install ingestion extras (for Hugging Face source):
+
+```bash
+py -m pip install -e ".[ingestion,dev]"
+```
+
+Smoke test ingestion:
+
+```bash
+milestone1 ingest-smoke --limit 25
+milestone1 ingest-smoke --source local --local-path sample.json --limit 10
+```
+
+Run tests:
+
+```bash
+pytest -q
+RUN_HF_INTEGRATION=1 pytest -m integration
+```
+
+## Phase 2 Preferences
+
+Phase 2 package:
+- `src/milestone1/phase2_preferences/`
+- Provides `UserPreferences`, `preferences_from_mapping`, `allowed_cities_from_restaurants`, and `allowed_city_names`.
+
+Parse preferences from CLI:
+
+```bash
+milestone1 prefs-parse --location Delhi --budget-band medium --cuisines "Italian,Chinese" --minimum-rating 4.0
+```
+
+Validate city name against corpus:
+
+```bash
+milestone1 prefs-parse --location Delhi --budget-band medium --cuisines "Italian,Chinese" --minimum-rating 4.0 --validate-city --city-source local --city-local-path tests/fixtures/restaurants_sample.json
+```
+
+On success, command prints normalized JSON.  
+On validation failure, command prints field errors to stderr and returns non-zero.
+
+## Phase 3 Integration
+
+Phase 3 package:
+- `src/milestone1/phase3_integration/`
+- Provides:
+  - `filter_and_rank` (hard constraints + deterministic ranking)
+  - `build_prompt_payload`
+  - `build_integration_output`
+
+Build candidates and prompt payload from CLI:
+
+```bash
+milestone1 prompt-build --location Delhi --budget-band medium --cuisines "Italian,Chinese" --minimum-rating 4.0 --source local --local-path tests/fixtures/restaurants_sample.json --candidate-cap 10
+```
+
+Output contains stable:
+- `candidates[]`
+- `prompt_payload`
+
+without calling an LLM.
+
+## Phase 4 Recommendation (Groq)
+
+Phase 4 package:
+- `src/milestone1/phase4_llm/`
+- Provides:
+  - Groq OpenAI-compatible client
+  - JSON ranking parser + grounding checks
+  - deterministic fallback
+  - `recommend_with_groq`
+
+Run end-to-end recommendation:
+
+```bash
+milestone1 recommend --location Delhi --budget-band high --cuisines "Chinese,Italian" --minimum-rating 4.0 --source local --local-path tests/fixtures/restaurants_sample.json
+```
+
+Required env:
+- `GROQ_API_KEY`
+- Optional: `GROQ_MODEL`
+
+Behavior:
+- Uses Groq when available.
+- Retries transient failures.
+- Falls back to deterministic top-k recommendations if LLM output is invalid or API call fails.
+
+## Key Documents
+
+- `docs/problemstatement.md`
+- `docs/architecture/phase-wise-architecture.md`
+- `docs/architecture/edge-cases.md`
+- `phase0-scope.md`
+- `dataset-contract.md`

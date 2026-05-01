@@ -1,0 +1,16 @@
+[
+  {
+    "restaurant_name": "Spice Hub",
+    "location": "Delhi",
+    "cuisines": "North Indian, Chinese",
+    "average_cost_for_two": "600",
+    "aggregate_rating": "4.2"
+  },
+  {
+    "restaurant_name": "Pasta Point",
+    "location": "Bangalore",
+    "cuisines": "Italian",
+    "average_cost_for_two": "900",
+    "aggregate_rating": "4.5"
+  }
+]

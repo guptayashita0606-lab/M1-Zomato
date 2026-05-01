@@ -1,0 +1,7 @@
+python-dotenv>=1.0.1
+
+[dev]
+pytest>=8.0.0
+
+[ingestion]
+datasets>=2.19.0
