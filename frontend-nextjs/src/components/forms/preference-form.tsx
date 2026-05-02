@@ -43,13 +43,15 @@ export function PreferenceForm({ onRecommendations, onLoading, onError, isLoadin
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.location.trim()) {
-      newErrors.location = "Location is required";
-    }
+    // Make location optional - allow empty location to search all cities
+    // if (!formData.location.trim()) {
+    //   newErrors.location = "Location is required";
+    // }
 
-    if (formData.cuisines.length === 0) {
-      newErrors.cuisines = "At least one cuisine is required";
-    }
+    // Make cuisines optional - allow empty cuisines to search all cuisines
+    // if (formData.cuisines.length === 0) {
+    //   newErrors.cuisines = "At least one cuisine is required";
+    // }
 
     if (formData.minimum_rating < 1 || formData.minimum_rating > 5) {
       newErrors.minimum_rating = "Rating must be between 1 and 5";
@@ -111,9 +113,9 @@ export function PreferenceForm({ onRecommendations, onLoading, onError, isLoadin
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Location Input */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          <MapPin className="w-4 h-4 inline mr-1" />
+      <div className="bg-surface-container-low rounded-lg p-md">
+        <label className="block text-sm font-medium text-on-surface mb-sm">
+          <span className="material-symbols-outlined text-primary text-[18px] align-middle mr-2">location_on</span>
           Location
         </label>
         <input
@@ -128,26 +130,25 @@ export function PreferenceForm({ onRecommendations, onLoading, onError, isLoadin
               onLocationChange(e.target.value);
             }
           }}
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-            errors.location ? "border-red-500" : "border-gray-300"
+          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 bg-surface-container-lowest ${
+            errors.location ? "border-red-500" : "border-outline"
           }`}
-          placeholder="Enter city or area..."
+          placeholder="Enter city or area (optional - leave empty to search all cities)"
         />
         {errors.location && (
-          <p className="mt-1 text-sm text-red-600">{errors.location}</p>
+          <p className="mt-1 text-sm text-error">{errors.location}</p>
         )}
         {meta && (
-          <p className="mt-1 text-xs text-gray-500">
-            Available cities: {meta.allowed_cities.slice(0, 5).join(", ")}
-            {meta.allowed_cities.length > 5 && "..."}
+          <p className="mt-1 text-xs text-on-secondary-container">
+            Popular: {meta.allowed_cities.slice(0, 5).join(", ")}
           </p>
         )}
       </div>
 
       {/* Budget Selection */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          <DollarSign className="w-4 h-4 inline mr-1" />
+      <div className="bg-surface-container-low rounded-lg p-md">
+        <label className="block text-sm font-medium text-on-surface mb-sm">
+          <span className="material-symbols-outlined text-primary text-[18px] align-middle mr-2">attach_money</span>
           Budget
         </label>
         <div className="flex space-x-4">
@@ -165,29 +166,29 @@ export function PreferenceForm({ onRecommendations, onLoading, onError, isLoadin
                 }
                 className="mr-2"
               />
-              <span className="capitalize">{budget}</span>
+              <span className="capitalize text-on-surface">{budget}</span>
             </label>
           ))}
         </div>
       </div>
 
       {/* Cuisine Selection */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          <Utensils className="w-4 h-4 inline mr-1" />
+      <div className="bg-surface-container-low rounded-lg p-md">
+        <label className="block text-sm font-medium text-on-surface mb-sm">
+          <span className="material-symbols-outlined text-primary text-[18px] align-middle mr-2">restaurant</span>
           Cuisines
         </label>
         <div className="flex flex-wrap gap-2 mb-2">
           {formData.cuisines.map((cuisine) => (
             <span
               key={cuisine}
-              className="bg-primary-100 text-primary-800 px-3 py-1 rounded-full text-sm flex items-center"
+              className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm flex items-center border border-primary/20"
             >
               {cuisine}
               <button
                 type="button"
                 onClick={() => handleCuisineRemove(cuisine)}
-                className="ml-2 text-primary-600 hover:text-primary-800"
+                className="ml-2 text-primary hover:text-primary-container"
               >
                 ×
               </button>
@@ -199,8 +200,8 @@ export function PreferenceForm({ onRecommendations, onLoading, onError, isLoadin
             type="text"
             value={selectedCuisine}
             onChange={(e) => setSelectedCuisine(e.target.value)}
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-            placeholder="Add cuisine..."
+            className="flex-1 px-3 py-2 border border-outline rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 bg-surface-container-lowest"
+            placeholder="Add cuisine (optional - leave empty to search all cuisines)"
             onKeyPress={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
@@ -211,46 +212,60 @@ export function PreferenceForm({ onRecommendations, onLoading, onError, isLoadin
           <button
             type="button"
             onClick={handleCuisineAdd}
-            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+            className="btn-secondary px-4 py-2"
           >
             Add
           </button>
         </div>
         {errors.cuisines && (
-          <p className="mt-1 text-sm text-red-600">{errors.cuisines}</p>
+          <p className="mt-1 text-sm text-error">{errors.cuisines}</p>
         )}
         {meta && (
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-on-secondary-container">
             Popular: {meta.supported_cuisines.slice(0, 8).join(", ")}
           </p>
         )}
       </div>
 
       {/* Rating Slider */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          <Star className="w-4 h-4 inline mr-1" />
-          Minimum Rating: {formData.minimum_rating.toFixed(1)}
+      <div className="bg-surface-container-low rounded-lg p-md">
+        <label className="block text-sm font-medium text-on-surface mb-sm">
+          <span className="material-symbols-outlined text-primary text-[18px] align-middle mr-2">star</span>
+          Minimum Rating
         </label>
-        <input
-          type="range"
-          min="1"
-          max="5"
-          step="0.1"
-          value={formData.minimum_rating}
-          onChange={(e) => {
-            setFormData({
-              ...formData,
-              minimum_rating: parseFloat(e.target.value),
-            });
-            if (errors.minimum_rating) {
-              setErrors({ ...errors, minimum_rating: "" });
-            }
-          }}
-          className="w-full"
-        />
+        <div className="space-y-sm">
+          <div className="flex justify-between text-xs text-on-secondary-container">
+            <span>1.0</span>
+            <span className="font-headline-sm text-primary font-bold">{formData.minimum_rating.toFixed(1)}</span>
+            <span>5.0</span>
+          </div>
+          <input
+            type="range"
+            min="1"
+            max="5"
+            step="0.1"
+            value={formData.minimum_rating}
+            onChange={(e) => {
+              setFormData({
+                ...formData,
+                minimum_rating: parseFloat(e.target.value),
+              });
+              if (errors.minimum_rating) {
+                setErrors({ ...errors, minimum_rating: "" });
+              }
+            }}
+            className="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer slider-primary"
+            style={{
+              background: `linear-gradient(to right, #b7122a 0%, #b7122a ${((formData.minimum_rating - 1) / 4) * 100}%, #e4e2e1 ${((formData.minimum_rating - 1) / 4) * 100}%, #e4e2e1 100%)`
+            }}
+          />
+          <div className="flex justify-between text-xs text-on-secondary-container">
+            <span className="text-xs">Any rating</span>
+            <span className="text-xs">High quality</span>
+          </div>
+        </div>
         {errors.minimum_rating && (
-          <p className="mt-1 text-sm text-red-600">{errors.minimum_rating}</p>
+          <p className="mt-2 text-sm text-error">{errors.minimum_rating}</p>
         )}
       </div>
 

@@ -1,0 +1,27 @@
+[theme]
+# Rosy Hearth theme matching Phase 7 design
+primaryColor = "#b7122a"
+backgroundColor = "#fcf9f8"
+secondaryBackgroundColor = "#ffffff"
+textColor = "#1c1c1c"
+
+[server]
+# Server configuration
+headless = true
+port = 8501
+enableCORS = false
+enableXsrfProtection = false
+
+[browser]
+# Browser configuration
+gatherUsageStats = false
+showErrorDetails = false
+
+[logger]
+# Logging configuration
+level = "info"
+
+[client]
+# Client configuration
+toolbarMode = "minimal"
+showErrorDetails = false

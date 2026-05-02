@@ -34,19 +34,19 @@ export default function Home() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <Sidebar currentPage="recommendations" />
       
-      <main className="flex-1 ml-72 p-xl">
+      <main className="flex-1 ml-72 p-8 bg-[#fcf9f8] overflow-auto">
         <Header location={currentLocation} />
         
         {!searchCompleted ? (
-          <div className="bg-surface-container-lowest rounded-lg warm-shadow border border-red-50 p-xl">
-            <div className="text-center mb-xl">
-              <h2 className="text-display-xl font-headline text-primary mb-md">
+          <div className="bg-white rounded-lg shadow-lg border border-red-50 p-8 max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-4xl font-bold text-[#b7122a] mb-4" style={{ fontFamily: 'Epilogue, sans-serif' }}>
                 Find Your Perfect Dining Experience
               </h2>
-              <p className="text-body-lg text-on-secondary-container max-w-2xl mx-auto">
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                 Let our AI curate personalized restaurant recommendations based on your unique taste preferences and dining history.
               </p>
             </div>
