@@ -10,7 +10,7 @@ import os
 # Add src to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-from milestone1.phase8_streamlit.standalone_app import main
+from milestone1.phase8_streamlit.simple_app import main
 
 if __name__ == "__main__":
     main()
