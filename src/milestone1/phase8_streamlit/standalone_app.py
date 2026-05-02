@@ -129,7 +129,8 @@ def load_restaurant_data() -> tuple[List[Dict[str, Any]], List[str], List[str]]:
                 "ManikaSaini/zomato-restaurant-recommendation",
                 split="train",
                 revision="main",
-                streaming=True
+                streaming=True,
+                use_auth_token=False
             )
         },
         {
@@ -137,14 +138,16 @@ def load_restaurant_data() -> tuple[List[Dict[str, Any]], List[str], List[str]]:
             "func": lambda: load_dataset(
                 "ManikaSaini/zomato-restaurant-recommendation",
                 split="train",
-                revision="main"
+                revision="main",
+                use_auth_token=False
             )
         },
         {
             "name": "No revision",
             "func": lambda: load_dataset(
                 "ManikaSaini/zomato-restaurant-recommendation",
-                split="train"
+                split="train",
+                use_auth_token=False
             )
         }
     ]
@@ -168,7 +171,13 @@ def load_restaurant_data() -> tuple[List[Dict[str, Any]], List[str], List[str]]:
                 break
                 
         except Exception as e:
-            st.warning(f"⚠️ {attempt['name']} failed: {str(e)[:100]}...")
+            error_msg = str(e).lower()
+            if "ssl" in error_msg or "certificate" in error_msg or "verify" in error_msg:
+                st.warning(f"⚠️ SSL/Certificate error in {attempt['name']}: Network connectivity issue")
+            elif "connection" in error_msg or "timeout" in error_msg:
+                st.warning(f"⚠️ Connection error in {attempt['name']}: Network timeout")
+            else:
+                st.warning(f"⚠️ {attempt['name']} failed: {str(e)[:100]}...")
             continue
     
     # Process data if successfully loaded
@@ -208,11 +217,12 @@ def load_restaurant_data() -> tuple[List[Dict[str, Any]], List[str], List[str]]:
     # Fallback to sample data if Hugging Face failed
     if dataset is None or len(restaurants) == 0:
         st.info("🍽️ Using sample restaurant data for demonstration")
+        st.info("💡 This ensures the app works reliably in all deployment environments")
         restaurants = SAMPLE_RESTAURANTS
         cities = list(set([r["location"] for r in restaurants]))
         cuisines = list(set([cuisine for r in restaurants for cuisine in r["cuisines"]]))
         
-        st.info(f"✅ Loaded {len(restaurants)} sample restaurants")
+        st.success(f"✅ Loaded {len(restaurants)} sample restaurants - Ready to use!")
     
     return restaurants, cities, cuisines
 
