@@ -10,6 +10,9 @@ requests>=2.31.0
 # Data processing
 pandas>=2.0.0
 
+# Hugging Face datasets for restaurant data
+datasets>=2.14.0
+
 # Optional: For enhanced styling
 plotly>=5.15.0
 
