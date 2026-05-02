@@ -187,7 +187,7 @@ This document breaks implementation into phases aligned to the workflow in `docs
 - CLI: `npm run dev` (starts frontend on http://localhost:3000)
 - Components: PreferenceForm, RestaurantCard, EmptyState, Header, Footer
 
-## Phase 8 - Deployment using Streamlit (optional)
+## Phase 8 - Deployment using Streamlit
 
 ### Responsibilities
 - **Role:** Single-process Python deployment path replicating CLI/API flow:
@@ -196,16 +196,23 @@ This document breaks implementation into phases aligned to the workflow in `docs
 - **Deployment:** Streamlit Community Cloud (free tier) or Docker-based alternatives.
 - **Relationship to phases 6-7:** Complementary demo-friendly path; may import `milestone1` directly or call Phase 6 API.
 - **UX scope:** `selectbox`, `text_input`, `slider`, `spinner`, optional `expander` for raw JSON/telemetry.
+- **Styling:** Streamlit theming with custom CSS for brand consistency (Rosy Hearth colors from Phase 7).
+- **Performance:** Caching for restaurant dataset and API responses to improve user experience.
 
 ### Exit criteria
 - `README` or `docs/streamlit-deploy.md` documents local run and Cloud deploy.
 - Reviewer can open hosted URL and complete one recommendation flow or reach an intentional empty state.
+- Streamlit app matches Phase 7 UI design and functionality.
+- Deployed app handles concurrent users and maintains responsive performance.
 
 ### Implemented artifacts
 - `src/milestone1/phase8_streamlit/app.py`
 - `streamlit_app.py` (repo root Cloud entrypoint)
-- optional `streamlit` extra in `pyproject.toml`
-- `streamlit-deploy.md`
+- `requirements-streamlit.txt` with Streamlit dependencies
+- `src/milestone1/phase8_streamlit/streamlit_theme.py` for custom styling
+- `docs/streamlit-deploy.md` with deployment instructions
+- `streamlit.toml` configuration file
+- Dockerfile for containerized deployment
 
 ## Phase 9 - Hardening and handoff (optional, recommended)
 
