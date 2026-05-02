@@ -1,16 +1,11 @@
-import streamlit as st
+#!/usr/bin/env python3
+"""
+Streamlit app entry point for deployment.
+This file serves as the main entry point for Streamlit Community Cloud deployment.
+"""
 
-st.title("Zomato AI")
-st.write("Restaurant Recommendations")
+# Import the main app that has all the features
+from app import main
 
-if st.button("Get Started"):
-    st.success("Welcome to Zomato AI!")
-    st.write("This is a working Streamlit app.")
-
-st.sidebar.write("Preferences")
-location = st.sidebar.text_input("Location")
-budget = st.sidebar.selectbox("Budget", ["low", "medium", "high"])
-
-if location:
-    st.write(f"Selected location: {location}")
-    st.write(f"Selected budget: {budget}")
+if __name__ == "__main__":
+    main()
