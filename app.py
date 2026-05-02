@@ -234,6 +234,46 @@ SAMPLE_RESTAURANTS = [
         "estimated_cost": "medium",
         "rating": 4.1,
         "explanation": "Specializes in delicious kebabs and North Indian cuisine. Great for meat lovers."
+    },
+    {
+        "name": "Basavanagardi Biryani House",
+        "location": "Basavanagudi",
+        "cuisines": ["Biryani", "North Indian", "Mughlai"],
+        "estimated_cost": "medium",
+        "rating": 4.3,
+        "explanation": "Authentic biryani restaurant known for flavorful rice dishes and traditional Mughlai cuisine."
+    },
+    {
+        "name": "South Street Cafe",
+        "location": "Basavanagudi",
+        "cuisines": ["South Indian", "Cafe", "Continental"],
+        "estimated_cost": "low",
+        "rating": 4.0,
+        "explanation": "Cozy cafe offering South Indian breakfast items and continental dishes in a relaxed atmosphere."
+    },
+    {
+        "name": "Spice Garden",
+        "location": "Basavanagudi",
+        "cuisines": ["North Indian", "Chinese", "Thai"],
+        "estimated_cost": "medium",
+        "rating": 3.9,
+        "explanation": "Multi-cuisine restaurant serving spicy North Indian dishes along with popular Chinese and Thai options."
+    },
+    {
+        "name": "Paradise Food Court",
+        "location": "Basavanagudi",
+        "cuisines": ["Fast Food", "Chinese", "North Indian"],
+        "estimated_cost": "low",
+        "rating": 3.7,
+        "explanation": "Budget-friendly food court offering quick meals and snacks for students and families."
+    },
+    {
+        "name": "Royal Kitchen",
+        "location": "Basavanagudi",
+        "cuisines": ["North Indian", "Mughlai", "Kebab"],
+        "estimated_cost": "high",
+        "rating": 4.4,
+        "explanation": "Upscale dining experience with authentic North Indian and Mughlai delicacies in an elegant setting."
     }
 ]
 
