@@ -121,84 +121,139 @@ def load_restaurant_data() -> tuple[List[Dict[str, Any]], List[str], List[str]]:
     cities = []
     cuisines = []
     
-    try:
-        # Try to load from Hugging Face
-        from datasets import load_dataset
-        
-        with st.spinner("Loading restaurant data from Hugging Face..."):
-            dataset = load_dataset(
+    # Try multiple approaches to load Hugging Face data
+    hf_load_attempts = [
+        {
+            "name": "Streaming approach",
+            "func": lambda: load_dataset(
                 "ManikaSaini/zomato-restaurant-recommendation",
                 split="train",
                 revision="main",
                 streaming=True
             )
-            
-            processed_restaurants = []
-            all_cities = set()
-            all_cuisines = set()
-            count = 0
-            max_items = 200  # Reduced for performance
-            
-            for row in dataset:
-                if count >= max_items:
-                    break
-                    
+        },
+        {
+            "name": "Standard approach",
+            "func": lambda: load_dataset(
+                "ManikaSaini/zomato-restaurant-recommendation",
+                split="train",
+                revision="main"
+            )
+        },
+        {
+            "name": "No revision",
+            "func": lambda: load_dataset(
+                "ManikaSaini/zomato-restaurant-recommendation",
+                split="train"
+            )
+        }
+    ]
+    
+    dataset = None
+    loading_method = None
+    
+    for attempt in hf_load_attempts:
+        try:
+            with st.spinner(f"Trying {attempt['name']}..."):
+                # Check if datasets package is available
                 try:
-                    name = row.get('name', '').strip()
-                    location = row.get('location', '').strip()
-                    rate = row.get('rate', '')
-                    cost = row.get('approx_cost(for two people)', '')
-                    cuisine_str = row.get('cuisines', '')
-                    
-                    if not name or not location:
-                        count += 1
-                        continue
-                    
-                    rating = extract_rating(rate)
-                    cost_band = extract_cost(cost)
-                    cuisine_list = normalize_cuisine_list(cuisine_str)
-                    
-                    if rating < 2.0:
-                        count += 1
-                        continue
-                    
-                    restaurant = {
-                        "name": name,
-                        "location": location,
-                        "cuisines": cuisine_list,
-                        "estimated_cost": cost_band,
-                        "rating": rating,
-                        "explanation": f"Popular {', '.join(cuisine_list[:2])} restaurant in {location} with {rating} rating."
-                    }
-                    
-                    processed_restaurants.append(restaurant)
-                    all_cities.add(location)
-                    for cuisine in cuisine_list:
-                        if cuisine and len(cuisine) > 2:
-                            all_cuisines.add(cuisine)
-                    
-                    count += 1
-                    
-                except Exception:
-                    count += 1
-                    continue
-            
-            restaurants = processed_restaurants
-            cities = sorted(list(all_cities))
-            cuisines = sorted(list(all_cuisines))[:50]
-            
-            st.success(f"✅ Loaded {len(restaurants)} restaurants from Hugging Face")
-            
-    except Exception as e:
-        st.warning(f"⚠️ Could not load Hugging Face data: {e}")
-        st.info("Using sample restaurant data instead")
-        
-        # Use sample data
+                    from datasets import load_dataset
+                except ImportError as e:
+                    st.error("❌ datasets package not available. Please install: pip install datasets")
+                    break
+                
+                dataset = attempt["func"]()
+                loading_method = attempt["name"]
+                st.success(f"✅ Successfully loaded using {attempt['name']}")
+                break
+                
+        except Exception as e:
+            st.warning(f"⚠️ {attempt['name']} failed: {str(e)[:100]}...")
+            continue
+    
+    # Process data if successfully loaded
+    if dataset is not None:
+        try:
+            with st.spinner("Processing restaurant data..."):
+                processed_restaurants = []
+                all_cities = set()
+                all_cuisines = set()
+                count = 0
+                max_items = 100  # Reduced for better performance
+                
+                if hasattr(dataset, 'select'):
+                    # Regular dataset - take first N items
+                    limited_data = dataset.select(range(min(max_items, len(dataset))))
+                    for row in limited_data:
+                        if process_restaurant_row(row, processed_restaurants, all_cities, all_cuisines):
+                            count += 1
+                else:
+                    # Streaming dataset
+                    for row in dataset:
+                        if count >= max_items:
+                            break
+                        if process_restaurant_row(row, processed_restaurants, all_cities, all_cuisines):
+                            count += 1
+                
+                restaurants = processed_restaurants
+                cities = sorted(list(all_cities))
+                cuisines = sorted(list(all_cuisines))[:30]  # Reduced for performance
+                
+                st.success(f"✅ Loaded {len(restaurants)} restaurants from Hugging Face using {loading_method}")
+                
+        except Exception as e:
+            st.error(f"❌ Error processing Hugging Face data: {e}")
+            dataset = None
+    
+    # Fallback to sample data if Hugging Face failed
+    if dataset is None or len(restaurants) == 0:
+        st.info("🍽️ Using sample restaurant data for demonstration")
         restaurants = SAMPLE_RESTAURANTS
         cities = list(set([r["location"] for r in restaurants]))
         cuisines = list(set([cuisine for r in restaurants for cuisine in r["cuisines"]]))
+        
+        st.info(f"✅ Loaded {len(restaurants)} sample restaurants")
     
     return restaurants, cities, cuisines
+
+def process_restaurant_row(row, processed_restaurants, all_cities, all_cuisines) -> bool:
+    """Process a single restaurant row from the dataset."""
+    try:
+        name = row.get('name', '').strip()
+        location = row.get('location', '').strip()
+        rate = row.get('rate', '')
+        cost = row.get('approx_cost(for two people)', '')
+        cuisine_str = row.get('cuisines', '')
+        
+        if not name or not location:
+            return False
+        
+        rating = extract_rating(rate)
+        cost_band = extract_cost(cost)
+        cuisine_list = normalize_cuisine_list(cuisine_str)
+        
+        if rating < 2.0:
+            return False
+        
+        restaurant = {
+            "name": name,
+            "location": location,
+            "cuisines": cuisine_list,
+            "estimated_cost": cost_band,
+            "rating": rating,
+            "explanation": f"Popular {', '.join(cuisine_list[:2])} restaurant in {location} with {rating} rating."
+        }
+        
+        processed_restaurants.append(restaurant)
+        all_cities.add(location)
+        for cuisine in cuisine_list:
+            if cuisine and len(cuisine) > 2:
+                all_cuisines.add(cuisine)
+        
+        return True
+        
+    except Exception:
+        return False
 
 def get_recommendations(restaurants: List[Dict[str, Any]], location: str, budget_band: str, 
                        cuisines: List[str], minimum_rating: float, top_k: int) -> List[Dict[str, Any]]:
