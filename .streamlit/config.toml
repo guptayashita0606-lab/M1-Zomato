@@ -1,0 +1,18 @@
+[theme]
+primaryColor = "#b7122a"
+backgroundColor = "#fcf9f8"
+secondaryBackgroundColor = "#f8e8ea"
+textColor = "#1c1c1c"
+font = "Plus Jakarta Sans"
+
+[server]
+headless = true
+port = 8501
+enableCORS = false
+enableXsrfProtection = false
+
+[browser]
+gatherUsageStats = false
+
+[logger]
+level = "info"
