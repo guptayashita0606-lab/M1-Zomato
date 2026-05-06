@@ -5,6 +5,18 @@ Phase 8 - Complete standalone version for reliable deployment.
 
 import streamlit as st
 from typing import List, Dict, Any
+import sys
+import os
+
+# Add src to path for imports
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'src'))
+
+try:
+    from milestone1.phase1_ingestion.loader import iter_restaurants
+    USE_HF_DATA = True
+except ImportError as e:
+    USE_HF_DATA = False
+    st.warning(f"⚠️ Hugging Face data not available: {str(e)}. Using sample data.")
 
 # Configure page
 st.set_page_config(
@@ -169,120 +181,182 @@ body {
 </style>
 """, unsafe_allow_html=True)
 
-# Sample restaurant data - no external dependencies
-SAMPLE_RESTAURANTS = [
-    {
-        "name": "Bukhara",
-        "location": "Delhi",
-        "cuisines": ["North Indian", "Mughlai", "Kebab"],
-        "estimated_cost": "high",
-        "rating": 4.5,
-        "explanation": "Authentic Mughlai cuisine with excellent ambiance and service. Perfect for traditional Indian dining experience."
-    },
-    {
-        "name": "Mainland China",
-        "location": "Bangalore",
-        "cuisines": ["Chinese", "Asian", "Sichuan"],
-        "estimated_cost": "medium",
-        "rating": 4.2,
-        "explanation": "Authentic Chinese cuisine with modern presentation. Known for excellent dim sum and stir-fry dishes."
-    },
-    {
-        "name": "Saravana Bhavan",
-        "location": "Chennai",
-        "cuisines": ["South Indian", "Vegetarian", "Dosas"],
-        "estimated_cost": "low",
-        "rating": 4.0,
-        "explanation": "Traditional South Indian vegetarian restaurant. Famous for authentic dosas and filter coffee."
-    },
-    {
-        "name": "Leopold Cafe",
-        "location": "Mumbai",
-        "cuisines": ["Continental", "Cafe", "Multi-cuisine"],
-        "estimated_cost": "medium",
-        "rating": 4.3,
-        "explanation": "Trendy cafe with colonial ambiance. Great for casual meetings and European cuisine."
-    },
-    {
-        "name": "Dominos Pizza",
-        "location": "Mumbai",
-        "cuisines": ["Pizza", "Fast Food", "Italian"],
-        "estimated_cost": "low",
-        "rating": 3.8,
-        "explanation": "Popular pizza chain with quick delivery and consistent quality. Great for casual dining."
-    },
-    {
-        "name": "Meghana Foods",
-        "location": "Bangalore",
-        "cuisines": ["Biryani", "North Indian", "Chinese"],
-        "estimated_cost": "medium",
-        "rating": 4.4,
-        "explanation": "Famous for authentic biryani and North Indian dishes. Always crowded with food lovers."
-    },
-    {
-        "name": "The Coffee Shack",
-        "location": "Banashankari",
-        "cuisines": ["Cafe", "Chinese", "Continental"],
-        "estimated_cost": "medium",
-        "rating": 4.2,
-        "explanation": "Cozy cafe serving great coffee and multi-cuisine dishes. Perfect for casual dining."
-    },
-    {
-        "name": "Kabab Magic",
-        "location": "Basavanagudi",
-        "cuisines": ["North Indian", "Kebab", "Chinese"],
-        "estimated_cost": "medium",
-        "rating": 4.1,
-        "explanation": "Specializes in delicious kebabs and North Indian cuisine. Great for meat lovers."
-    },
-    {
-        "name": "Basavanagardi Biryani House",
-        "location": "Basavanagudi",
-        "cuisines": ["Biryani", "North Indian", "Mughlai"],
-        "estimated_cost": "medium",
-        "rating": 4.3,
-        "explanation": "Authentic biryani restaurant known for flavorful rice dishes and traditional Mughlai cuisine."
-    },
-    {
-        "name": "South Street Cafe",
-        "location": "Basavanagudi",
-        "cuisines": ["South Indian", "Cafe", "Continental"],
-        "estimated_cost": "low",
-        "rating": 4.0,
-        "explanation": "Cozy cafe offering South Indian breakfast items and continental dishes in a relaxed atmosphere."
-    },
-    {
-        "name": "Spice Garden",
-        "location": "Basavanagudi",
-        "cuisines": ["North Indian", "Chinese", "Thai"],
-        "estimated_cost": "medium",
-        "rating": 3.9,
-        "explanation": "Multi-cuisine restaurant serving spicy North Indian dishes along with popular Chinese and Thai options."
-    },
-    {
-        "name": "Paradise Food Court",
-        "location": "Basavanagudi",
-        "cuisines": ["Fast Food", "Chinese", "North Indian"],
-        "estimated_cost": "low",
-        "rating": 3.7,
-        "explanation": "Budget-friendly food court offering quick meals and snacks for students and families."
-    },
-    {
-        "name": "Royal Kitchen",
-        "location": "Basavanagudi",
-        "cuisines": ["North Indian", "Mughlai", "Kebab"],
-        "estimated_cost": "high",
-        "rating": 4.4,
-        "explanation": "Upscale dining experience with authentic North Indian and Mughlai delicacies in an elegant setting."
-    }
-]
+# Load restaurant data from Hugging Face or fallback to sample data
+@st.cache_data(ttl=3600)  # Cache for 1 hour
+def load_restaurant_data():
+    """Load restaurant data from Hugging Face or fallback to sample data."""
+    if USE_HF_DATA:
+        try:
+            restaurants = []
+            for restaurant in iter_restaurants(source="hf", limit=1000):
+                restaurants.append({
+                    "name": restaurant.name,
+                    "location": restaurant.location,
+                    "cuisines": restaurant.cuisines,
+                    "estimated_cost": restaurant.cost,
+                    "rating": restaurant.rating,
+                    "explanation": f"Popular {restaurant.location} restaurant known for {', '.join(restaurant.cuisines[:3])}. Rating: {restaurant.rating}/5."
+                })
+            print(f"✅ Successfully loaded {len(restaurants)} restaurants from Hugging Face")
+            return restaurants
+        except Exception as e:
+            print(f"❌ Error loading Hugging Face data: {str(e)}")
+            # Don't show error in Streamlit, just fallback silently
+    
+    # Fallback sample data
+    return [
+        {
+            "name": "Bukhara",
+            "location": "Delhi",
+            "cuisines": ["North Indian", "Mughlai", "Kebab"],
+            "estimated_cost": "high",
+            "rating": 4.5,
+            "explanation": "Authentic Mughlai cuisine with excellent ambiance and service. Perfect for traditional Indian dining experience."
+        },
+        {
+            "name": "Karim's",
+            "location": "Delhi",
+            "cuisines": ["Mughlai", "North Indian", "Kebab"],
+            "estimated_cost": "medium",
+            "rating": 4.3,
+            "explanation": "Legendary Mughlai restaurant famous for its kebabs and traditional dishes since 1913."
+        },
+        {
+            "name": "Indian Accent",
+            "location": "Delhi",
+            "cuisines": ["Modern Indian", "Continental", "Fusion"],
+            "estimated_cost": "high",
+            "rating": 4.6,
+            "explanation": "Award-winning restaurant offering innovative Indian cuisine with global influences."
+        },
+        {
+            "name": "Parathe Wali Gali",
+            "location": "Delhi",
+            "cuisines": ["North Indian", "Street Food", "Traditional"],
+            "estimated_cost": "low",
+            "rating": 4.1,
+            "explanation": "Famous street food destination known for authentic parathas and traditional Delhi snacks."
+        },
+        {
+            "name": "Dum Pukht",
+            "location": "Delhi",
+            "cuisines": ["North Indian", "Mughlai", "Awadhi"],
+            "estimated_cost": "high",
+            "rating": 4.4,
+            "explanation": "Fine dining restaurant specializing in slow-cooked Awadhi cuisine and Mughlai delicacies."
+        },
+        {
+            "name": "Mainland China",
+            "location": "Bangalore",
+            "cuisines": ["Chinese", "Asian", "Sichuan"],
+            "estimated_cost": "medium",
+            "rating": 4.2,
+            "explanation": "Authentic Chinese cuisine with modern presentation. Known for excellent dim sum and stir-fry dishes."
+        },
+        {
+            "name": "Saravana Bhavan",
+            "location": "Chennai",
+            "cuisines": ["South Indian", "Vegetarian", "Dosas"],
+            "estimated_cost": "low",
+            "rating": 4.0,
+            "explanation": "Traditional South Indian vegetarian restaurant. Famous for authentic dosas and filter coffee."
+        },
+        {
+            "name": "Leopold Cafe",
+            "location": "Mumbai",
+            "cuisines": ["Continental", "Cafe", "Multi-cuisine"],
+            "estimated_cost": "medium",
+            "rating": 4.3,
+            "explanation": "Trendy cafe with colonial ambiance. Great for casual meetings and European cuisine."
+        },
+        {
+            "name": "Dominos Pizza",
+            "location": "Mumbai",
+            "cuisines": ["Pizza", "Fast Food", "Italian"],
+            "estimated_cost": "low",
+            "rating": 3.8,
+            "explanation": "Popular pizza chain with quick delivery and consistent quality. Great for casual dining."
+        },
+        {
+            "name": "Meghana Foods",
+            "location": "Bangalore",
+            "cuisines": ["Biryani", "North Indian", "Chinese"],
+            "estimated_cost": "medium",
+            "rating": 4.4,
+            "explanation": "Famous for authentic biryani and North Indian dishes. Always crowded with food lovers."
+        },
+        {
+            "name": "The Coffee Shack",
+            "location": "Banashankari",
+            "cuisines": ["Cafe", "Chinese", "Continental"],
+            "estimated_cost": "medium",
+            "rating": 4.2,
+            "explanation": "Cozy cafe serving great coffee and multi-cuisine dishes. Perfect for casual dining."
+        },
+        {
+            "name": "Kabab Magic",
+            "location": "Basavanagudi",
+            "cuisines": ["North Indian", "Kebab", "Chinese"],
+            "estimated_cost": "medium",
+            "rating": 4.1,
+            "explanation": "Specializes in delicious kebabs and North Indian cuisine. Great for meat lovers."
+        },
+        {
+            "name": "Basavanagardi Biryani House",
+            "location": "Basavanagudi",
+            "cuisines": ["Biryani", "North Indian", "Mughlai"],
+            "estimated_cost": "medium",
+            "rating": 4.3,
+            "explanation": "Authentic biryani restaurant known for flavorful rice dishes and traditional Mughlai cuisine."
+        },
+        {
+            "name": "South Street Cafe",
+            "location": "Basavanagudi",
+            "cuisines": ["South Indian", "Cafe", "Continental"],
+            "estimated_cost": "low",
+            "rating": 4.0,
+            "explanation": "Cozy cafe offering South Indian breakfast items and continental dishes in a relaxed atmosphere."
+        },
+        {
+            "name": "Spice Garden",
+            "location": "Basavanagudi",
+            "cuisines": ["North Indian", "Chinese", "Thai"],
+            "estimated_cost": "medium",
+            "rating": 3.9,
+            "explanation": "Multi-cuisine restaurant serving spicy North Indian dishes along with popular Chinese and Thai options."
+        },
+        {
+            "name": "Paradise Food Court",
+            "location": "Basavanagudi",
+            "cuisines": ["Fast Food", "Chinese", "North Indian"],
+            "estimated_cost": "low",
+            "rating": 3.7,
+            "explanation": "Budget-friendly food court offering quick meals and snacks for students and families."
+        },
+        {
+            "name": "Royal Kitchen",
+            "location": "Basavanagudi",
+            "cuisines": ["North Indian", "Mughlai", "Kebab"],
+            "estimated_cost": "high",
+            "rating": 4.4,
+            "explanation": "Upscale dining experience with authentic North Indian and Mughlai delicacies in an elegant setting."
+        }
+    ]
+
+# Load data at startup
+RESTAURANTS = load_restaurant_data()
+
+# Show data source info
+data_source = "Hugging Face" if USE_HF_DATA and len(RESTAURANTS) > 20 else "Sample"
+data_color = "success" if data_source == "Hugging Face" else "info"
+st.sidebar.markdown(f"📊 Using {data_source} Data ({len(RESTAURANTS)} restaurants)")
 
 def get_recommendations(location: str, budget_band: str, cuisines: List[str], 
                        minimum_rating: float, top_k: int) -> List[Dict[str, Any]]:
     """Get recommendations based on filters."""
     filtered = []
     
-    for restaurant in SAMPLE_RESTAURANTS:
+    for restaurant in RESTAURANTS:
         location_match = not location or location.lower() in restaurant["location"].lower()
         rating_match = restaurant["rating"] >= minimum_rating
         budget_match = budget_band == "any" or restaurant["estimated_cost"] == budget_band
@@ -332,9 +406,9 @@ def render_sidebar() -> Dict[str, Any]:
     """Render sidebar with preference inputs."""
     st.sidebar.markdown("## 🎯 Your Preferences")
     
-    # Get unique cities and cuisines from sample data
-    cities = sorted(list(set([r["location"] for r in SAMPLE_RESTAURANTS])))
-    all_cuisines = sorted(list(set([cuisine for r in SAMPLE_RESTAURANTS for cuisine in r["cuisines"]])))
+    # Get unique cities and cuisines from loaded data
+    cities = sorted(list(set([r["location"] for r in RESTAURANTS])))
+    all_cuisines = sorted(list(set([cuisine for r in RESTAURANTS for cuisine in r["cuisines"]])))
     
     # Location input
     location = st.sidebar.text_input(
@@ -355,7 +429,7 @@ def render_sidebar() -> Dict[str, Any]:
         "⭐ Minimum Rating",
         min_value=1.0,
         max_value=5.0,
-        value=4.0,
+        value=3.5,
         step=0.1,
         help="Minimum restaurant rating"
     )
